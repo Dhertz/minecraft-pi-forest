@@ -29,7 +29,7 @@ def make_fire(x,z):
 ### alg - generator to create shape, see below for options
 def make_tree(xt, zt, r, t, alg):
   assert xt < Minecraft.bounds/2 and xt > -Minecraft.bounds/2, "x coord is not in bounds: %i" % xt
-  assert zt < Minecraft.bounds/2 and zt > -Minecraft.bounds/2, "z coord is not in bounds: %i" % z
+  assert zt < Minecraft.bounds/2 and zt > -Minecraft.bounds/2, "z coord is not in bounds: %i" % zt
   assert r < 5, "radius is too large"
   assert t < 20, "trunk is too large"
   for x, y, z in alg(xt, t+r, zt, r):
@@ -69,3 +69,8 @@ def xmas(x,y,z,r):
   for i in range(1, 4):
     for j in cone(x, i*3+r, z, 2):
       yield j
+
+def put_block(x,z,blocktype):
+  assert x < Minecraft.bounds/2 and x > -Minecraft.bounds/2, "x coord is not in bounds: %i" % x
+  assert z < Minecraft.bounds/2 and z > -Minecraft.bounds/2, "z coord is not in bounds: %i" % z
+  Minecraft.mc.setBlock(x, 0, z, blocktype)
