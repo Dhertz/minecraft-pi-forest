@@ -1,21 +1,25 @@
 from minecraft import minecraft, block
 from math import sqrt
 
-def clear_area(size):
+class Minecraft(object):
+
   mc = minecraft.Minecraft.create()
-  mc.setBlocks(-size/2, -6, -size/2, size/2, -2, size/2, block.DIRT)
-  mc.setBlocks(-size/2, -1, -size/2, size/2, -1, size/2, block.GRASS)
-  mc.setBlocks(-size/2, 0, -size/2, size/2, 60, size/2, block.AIR)
+  bounds = 100
+
+def clear_area():
+  size = Minecraft.bounds
+  Minecraft.mc.setBlocks(-size/2, -6, -size/2, size/2, -2, size/2, block.DIRT)
+  Minecraft.mc.setBlocks(-size/2, -1, -size/2, size/2, -1, size/2, block.GRASS)
+  Minecraft.mc.setBlocks(-size/2, 0, -size/2, size/2, 60, size/2, block.AIR)
 
 def teleport_home():
-  mc = minecraft.Minecraft.create()
-  mc.player.setTilePos(1,0,0)
+  Minecraft.mc = minecraft.Minecraft.create()
+  Minecraft.mc.player.setTilePos(1,0,0)
 
 ### Non-funcitonal ###
 def make_fire(x,z):
-  mc = minecraft.Minecraft.create()
   #mc.setBlock(x, 1, z, block.FIRE) 
-  block = mc.getBlockWithData(x, 1, z);
+  block = Minecraft.mc.getBlockWithData(x, 1, z);
   block.data = (block.data + 1) & 0xf;
 
 ### xt  - x coord
@@ -24,10 +28,13 @@ def make_fire(x,z):
 ### t   - trunk height
 ### alg - generator to create shape, see below for options
 def make_tree(xt, zt, r, t, alg):
-  mc = minecraft.Minecraft.create()
+  assert xt < Minecraft.bounds/2 and xt > -Minecraft.bounds/2, "x coord is not in bounds: %i" % xt
+  assert zt < Minecraft.bounds/2 and zt > -Minecraft.bounds/2, "z coord is not in bounds: %i" % z
+  assert r < 5, "radius is too large"
+  assert t < 20, "trunk is too large"
   for x, y, z in alg(xt, t+r, zt, r):
-    mc.setBlock(x, y, z, block.LEAVES)
-  mc.setBlocks(xt, 0 ,zt, xt, t+r, zt, block.WOOD)
+    Minecraft.mc.setBlock(x, y, z, block.LEAVES)
+  Minecraft.mc.setBlocks(xt, 0 ,zt, xt, t+r, zt, block.WOOD)
 
 
 ### Generators for the make_tree function - pass in as last argument ###
@@ -62,12 +69,3 @@ def xmas(x,y,z,r):
   for i in range(1, 4):
     for j in cone(x, i*3+r, z, 2):
       yield j
-
-if __name__ == '__main__':
-  clear_area(60)
-#   teleport_home()
-  make_tree(-15,0,3,2, make_sphere)
-  make_tree(-10,5,1,2,make_cube)
-  make_tree(-5,0,3,10,make_stripey)
-  make_tree(0,5,2,4,make_cone)
-  make_tree(5,0,2,4,make_xmas)
