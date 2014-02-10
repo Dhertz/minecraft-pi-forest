@@ -6,6 +6,7 @@ sudo apt-get install -y git nodejs npm luakit iptables-persistent
 
 sudo su -c 'iptables-save > /etc/iptables/rules.v4'
 
+cd ..
 git clone git://github.com/Dhertz/RPi-WaterbearNodeJS
 cd RPi-WaterbearNodeJS
 git submodule update --init --recursive
