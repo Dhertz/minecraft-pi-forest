@@ -10,6 +10,6 @@ git clone git://github.com/Dhertz/RPi-WaterbearNodeJS
 cd RPi-WaterbearNodeJS
 git submodule update --init --recursive
 npm install --registry http://registry.npmjs.org
-nodejs node-js-server.js &
+nodejs nodejs-server.js &
 /home/pi/mcpi/minecraft-pi &
 luakit -u http://localhost:8000/minecraftjs.html
