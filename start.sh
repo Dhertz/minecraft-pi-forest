@@ -6,4 +6,6 @@ git pull
 git submodule update
 nodejs nodejs-server.js &
 /home/pi/mcpi/minecraft-pi &
-luakit -u http://localhost:8000/minecraftjs.html
+IP=`ip addr show eth0 | grep -oP '(inet [\d|\.]+)' | grep -oP '[\d|\.]+'`
+echo "Go to http://$IP:8000/minecraftjs.html:wq on the RM computer in chrome!"
+
